@@ -1,0 +1,17 @@
+#Dirs
+
+.vs/
+Application/
+bin/
+bin-int/
+x64/
+
+#Files
+
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+
+#Exludes
+!Vendor/bin
