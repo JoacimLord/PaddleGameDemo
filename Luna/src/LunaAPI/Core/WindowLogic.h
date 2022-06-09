@@ -14,7 +14,7 @@ namespace Luna {
 
 		void OnUpdate() override;
 		inline unsigned int GetWidth() override { return m_Data.Width; }
-		inline unsigned int GetHeight() override { return m_Data.Width; }
+		inline unsigned int GetHeight() override { return m_Data.Height; }
 
 		void SetEventCallback(const EventCallBackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
