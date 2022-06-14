@@ -1,5 +1,4 @@
-# Demo Paddle Game made with The Luna Framework
-
+# The Luna Framework(LFW) - Demo Paddle Game
 
 # Disclaimer
 

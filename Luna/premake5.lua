@@ -15,11 +15,11 @@ project "Luna"
 		"src/**.h",
 		"src/**.cpp",
 		
-		"vendor/stb_image/**.h",
-		"vendor/stb_image/**.cpp",
+		"Vendor/stb_image/**.h",
+		"Vendor/stb_image/**.cpp",
 
-		"vendor/glm/glm/**.hpp",
-		"vendor/glm/glm/**.inl",
+		"Vendor/glm/glm/**.hpp",
+		"Vendor/glm/glm/**.inl",
 	}
 
 	defines

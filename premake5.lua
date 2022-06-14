@@ -1,6 +1,6 @@
 include "Dependencies.lua"
 
-workspace "LunaFramework"
+workspace "LFW_PaddleDemo"
 	architecture "x86_64"
 	startproject "Sandbox"
 
@@ -24,11 +24,9 @@ workspace "LunaFramework"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
-	--include "Vendor/"
 	include "Luna/Vendor/GLFW"
 	include "Luna/Vendor/Glad"
 	include "Luna/Vendor/imgui"
-	-- Don't include glm here!
 group ""
 
 include "Luna"
