@@ -1,11 +1,9 @@
 #include "Luna.h"
 #include <imgui/imgui.h>
 
-//States for directions
 enum class HorizontalDirection
 {
 	Idle = 0,
-
 	Left,
 	Right
 };
@@ -13,7 +11,6 @@ enum class HorizontalDirection
 enum class VerticalDirection
 {
 	Idle = 0,
-
 	Up,
 	Down
 };
@@ -34,7 +31,6 @@ struct Entity
 		anchor.Scale.y = h;
 	}
 
-	//Only for ball but it will do for now to have it in every Entity obj.
 	HorizontalDirection direction = HorizontalDirection::Left;
 	VerticalDirection height = VerticalDirection::Down;
 };
@@ -53,7 +49,6 @@ void Luna::Application::BuildUI()
 	ImGui::End();
 }
 
-//Change these to root for the project, not solution!
 const char* filepathBG = "Resources/bg.png";
 const char* filepathBlue = "Resources/blue.png";
 const char* filepathpaddle = "Resources/paddle.png";
@@ -73,16 +68,14 @@ bool CalculateCollision(Luna::Anchor& a, Luna::Anchor& b)
 
 int main()
 {
-	Luna::Application app("Solo-Paddle made in with The Luna Framework"); //RENAME
+	Luna::Application app("Paddle Demo");
 
-	//Abstraction in progress, how to load textures.
 	std::shared_ptr<Luna::Texture> backdrop = std::make_shared<Luna::Texture>(filepathBG);
 	std::shared_ptr<Luna::Texture> paddle1 = std::make_shared<Luna::Texture>(filepathpaddle);
 	std::shared_ptr<Luna::Texture> ball = std::make_shared<Luna::Texture>(filepathBall);
 	std::shared_ptr<Luna::Texture> wall = std::make_shared<Luna::Texture>(filepathBlue);
 
 
-	//Init positions for textures -----------------------------------------------------------------------------------------
 	Entity bg;
 	bg.SetSize(1500.0f, 800.0f);
 	bg.SetPosition(600.0f, 350.0f);
@@ -100,28 +93,24 @@ int main()
 	wallPos.SetPosition(1200.0f, 350.0f);
 	
 
-	float m_LastFrameTime = 0.0f;
+	float lastFrameTime = 0.0f;
 	float xSpeed = 8;
 	float ySpeed = 1.5f;
 
 	while (app.IsRunning())
 	{
 		float elapsedTime = app.GetElapesedRuntime();
-		Luna::DeltaTime deltaTime = elapsedTime - m_LastFrameTime;
-		m_LastFrameTime = elapsedTime;
+		Luna::DeltaTime deltaTime = elapsedTime - lastFrameTime;
+		lastFrameTime = elapsedTime;
 
-		//Random number between 0 and 1, decides the direction of the ball bounce :>
 		int temp = std::rand() % 2;
 
-		//If paddle is out of bounds
 		if ((bluePaddle.anchor.Translation.x < 0) || (bluePaddle.anchor.Translation.x > 1151) ||
 			(bluePaddle.anchor.Translation.y > 700) || (bluePaddle.anchor.Translation.y < 0))
 		{
 			std::cout << "Paddle out of bounds, resetting!\n";
 			bluePaddle.SetPosition(100.0f, 350.0f);
 		}
-
-		//If ball is out of bounds
 		if ((redBall.anchor.Translation.x < 0) || (redBall.anchor.Translation.x > 1200) ||
 			(redBall.anchor.Translation.y > 700) || (redBall.anchor.Translation.y < 0))
 		{
@@ -129,9 +118,7 @@ int main()
 			bounceCounter = 0;
 			redBall.SetPosition(1100.0f, 350.0f);
 		}
-
-		//CHECK DIRECTION 
-		if (CalculateCollision(wallPos.anchor, redBall.anchor) || redBall.anchor.Translation.x > 1150) //Collision OR ball going over wall edge
+		if (CalculateCollision(wallPos.anchor, redBall.anchor) || redBall.anchor.Translation.x > 1150)
 		{
 			bounceCounter++;
 			std::cout << "Point gained!\n";
@@ -140,7 +127,6 @@ int main()
 
 			redBall.direction = HorizontalDirection::Left;
 
-			//random directon
 			if (temp == 1)
 			{
 				redBall.height = VerticalDirection::Up;
@@ -169,7 +155,6 @@ int main()
 			}
 		}
 
-		//Direction and speed of ball
 		if(redBall.direction == HorizontalDirection::Left)
 		{
 			redBall.anchor.Translation.x -= xSpeed;
@@ -188,7 +173,6 @@ int main()
 			redBall.anchor.Translation.y -= ySpeed;
 		}
 		
-		//Paddle movement
 		if (Luna::Input::IsKeyPressed(Luna::Key::W)) { bluePaddle.anchor.Translation.y += 5; }
 		else if (Luna::Input::IsKeyPressed(Luna::Key::S)) { bluePaddle.anchor.Translation.y -= 5; }
 		
@@ -196,22 +180,15 @@ int main()
 		else if (Luna::Input::IsKeyPressed(Luna::Key::A)) { bluePaddle.anchor.Translation.x -= 5; }
 
 
-		//=========================================
-		//			MOUSE CLICK EXAMPLE
-		//=========================================
-
-		//Example of interaction (can drag the paddle with left mouse click)
 		if (Luna::Input::IsMouseButtonPressed(Luna::Mouse::ButtonLeft))
 		{
-			//Create an anchor for the mouse to "hold on to", and for the collision function argument.
 			Luna::Anchor mouseCursor;
 
-			//Make it a little bit wider just for this example
 			mouseCursor.Scale.x = 30;
 			mouseCursor.Scale.y = 30;
 
 			mouseCursor.Translation.x = Luna::Input::GetMousePositionX();
-			mouseCursor.Translation.y = Luna::Input::GetMousePositionY(); //This gets reversed for some reason, WIP.
+			mouseCursor.Translation.y = Luna::Input::GetMousePositionY();
 
 			if (CalculateCollision(mouseCursor, bluePaddle.anchor))
 			{
@@ -220,13 +197,13 @@ int main()
 			}
 		}
 
-		//Render everything
 		app.Clear(1.0f, 0.0f, 1.0f, 1.0f);
-
-		app.Render(backdrop, bg.anchor.GetTransform());			//Background
-		app.Render(paddle1, bluePaddle.anchor.GetTransform());  //Right paddle (blue)
-		app.Render(ball, redBall.anchor.GetTransform());  //Right paddle (blue)
-		app.Render(wall, wallPos.anchor.GetTransform());  //Wall
+		{
+			app.Render(backdrop, bg.anchor.GetTransform());			
+			app.Render(paddle1, bluePaddle.anchor.GetTransform()); 
+			app.Render(ball, redBall.anchor.GetTransform());
+			app.Render(wall, wallPos.anchor.GetTransform());
+		}
 
 		app.Display();
 		app.Update();
