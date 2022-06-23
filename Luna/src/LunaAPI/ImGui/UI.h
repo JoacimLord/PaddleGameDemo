@@ -21,12 +21,6 @@ namespace Luna {
 	class UI
 	{
 	public:
-		const char* THEME_DARK = "dark";
-		const char* THEME_LIGHT = "light";
-
-		const std::string THEME_DARK2 = "dark";
-		const std::string THEME_LIGHT2 = "light";
-
 		std::shared_ptr<Framebuffer> m_Framebuffer;
 
 		bool m_DemoWindow = true;
@@ -49,10 +43,8 @@ namespace Luna {
 		void StartRenderFrame();
 		void RenderFrame();
 		void EndRenderFrame();
-		void SetThemeColors(const std::string& theme);
 
 	public:
-		void OnUIRender();
 
 		void BindFramebuffer(float r, float g, float b, float transparent);
 		void UnbindFramebuffer();

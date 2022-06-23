@@ -68,6 +68,7 @@ bool CalculateCollision(Luna::Anchor& a, Luna::Anchor& b)
 
 int main()
 {
+	//Some day this will be cleaned up... :)
 	Luna::Application app("Paddle Demo");
 
 	std::shared_ptr<Luna::Texture> backdrop = std::make_shared<Luna::Texture>(filepathBG);

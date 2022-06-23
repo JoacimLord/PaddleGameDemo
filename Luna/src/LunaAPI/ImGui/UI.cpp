@@ -10,9 +10,8 @@
 
 #include <GLFW/glfw3.h>
 
-
 namespace Luna {
-	//temp
+
 	ImVec2 m_ViewportSize = { 0.0f, 0.0f };
 	ImVec2 m_ViewportBounds[2];
 
@@ -39,16 +38,12 @@ namespace Luna {
 		ImGui::StyleColorsDark();
 		ImGuiStyle& style = ImGui::GetStyle();
 
-		//Thx The Cherno for this function (and ofc alot more)
-		SetThemeColors("Dark");
-
 		Application& app = Application::Get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetOriginalWindow());
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 410"); //???
+		ImGui_ImplOpenGL3_Init("#version 410");
 
-		//Set framebuffer
 		Luna::FramebufferSpecification spec;
 		spec.Width = 1280;
 		spec.Height = 720;
@@ -89,8 +84,6 @@ namespace Luna {
 		m_Framebuffer->Invalidate();
 	}
 
-	//UILayer
-	//Used in app
 	void UI::RenderFrame()
 	{
 			static bool dockspaceOpen = true;
@@ -116,15 +109,15 @@ namespace Luna {
 
 
 			//----------------------------------------------
-			//					MAIN WINDOW
+			//			MAIN WINDOW (DOCKSPACE)
 			//----------------------------------------------
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
 			//==============================================
-			//New name based on string?
-			ImGui::Begin("Luna Editor", &dockspaceOpen, window_flags);
-
+			//Dockspace
+			//==============================================
+			ImGui::Begin("LFW Dockspace", &dockspaceOpen, window_flags);
 
 			ImGui::PopStyleVar();
 
@@ -136,32 +129,10 @@ namespace Luna {
 			ImGuiStyle& style = ImGui::GetStyle();
 			float minWinSizeX = style.WindowMinSize.x;
 
-			//This controls all windows.
-			//Thats why the scenepanel cant get smaller than 370.0f!
-			style.WindowMinSize.x = 370.0f;
 			if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 			{
 				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-			}
-
-			style.WindowMinSize.x = minWinSizeX;
-
-			if (ImGui::BeginMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					if (ImGui::MenuItem("Close")) { Application::Get().OnGUIClose(); }
-
-					//CHANGE ORDER OF THESE!
-					//if (ImGui::MenuItem("New", "Ctrl+N"))	NewScene();
-					//if (ImGui::MenuItem("Open...", "Ctrl+O"))	OpenScene();
-					//if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) SaveSceneAs();
-
-					ImGui::EndMenu();
-				}
-
-				ImGui::EndMenuBar();
 			}
 
 			//----------------------------------------------
@@ -192,24 +163,11 @@ namespace Luna {
 
 
 			//---------------------------------------------------
-			//					DEMO WINDOW
+			//					GAME 'UI'
 			//---------------------------------------------------
-			// if()
-			
-			if (showDemo) { OnUIRender(); }
 			Luna::Application::BuildUI();
 	}
 
-
-	//USER-DEFINED
-	void UI::OnUIRender()
-	{
-		ImGui::Begin("Demo");
-		ImGui::Text("Click for ImGui Demo Window");
-		ImGui::Checkbox("Demo", &m_DemoGuiWindow);
-		if (m_DemoGuiWindow) { ImGui::ShowDemoWindow(&m_DemoGuiWindow); }
-		ImGui::End();
-	}
 
 	//Used in app
 	void UI::EndRenderFrame()
@@ -230,43 +188,5 @@ namespace Luna {
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-	}
-
-	void UI::SetThemeColors(const std::string& theme)
-	{
-		if (theme == "dark" || "DARK" || "Dark")
-		{
-			std::cout << "Dark Theme Colors has been set!\n";
-		}
-
-		auto& colors = ImGui::GetStyle().Colors;
-		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
-
-		// Headers
-		colors[ImGuiCol_Header] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-		colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-		colors[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-		// Buttons
-		colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-		colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-		colors[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-		// Frame BG
-		colors[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-		colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-		colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-		// Tabs
-		colors[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-		colors[ImGuiCol_TabHovered] = ImVec4{ 0.38f, 0.3805f, 0.381f, 1.0f };
-		colors[ImGuiCol_TabActive] = ImVec4{ 0.28f, 0.2805f, 0.281f, 1.0f };
-		colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-		colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-
-		// Title
-		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 	}
 }
