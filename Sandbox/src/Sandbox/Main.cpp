@@ -76,7 +76,6 @@ int main()
 	std::shared_ptr<Luna::Texture> ball = std::make_shared<Luna::Texture>(filepathBall);
 	std::shared_ptr<Luna::Texture> wall = std::make_shared<Luna::Texture>(filepathBlue);
 
-
 	Entity bg;
 	bg.SetSize(1500.0f, 800.0f);
 	bg.SetPosition(600.0f, 350.0f);
@@ -93,7 +92,6 @@ int main()
 	wallPos.SetSize(50.0f, 800.0f);
 	wallPos.SetPosition(1200.0f, 350.0f);
 	
-
 	float lastFrameTime = 0.0f;
 	float xSpeed = 8;
 	float ySpeed = 1.5f;
