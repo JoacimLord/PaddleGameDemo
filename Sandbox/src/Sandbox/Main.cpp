@@ -36,6 +36,10 @@ struct Entity
 };
 
 float bounceCounter = 0;
+const char* filepathBG = "Resources/bg.png";
+const char* filepathBlue = "Resources/blue.png";
+const char* filepathpaddle = "Resources/paddle.png";
+const char* filepathBall = "Resources/ball.png";
 
 void Luna::Application::BuildUI()
 {
@@ -47,12 +51,16 @@ void Luna::Application::BuildUI()
 	ImGui::Begin("SCOREBOARD");
 	ImGui::Text("Score: %.0f", bounceCounter);
 	ImGui::End();
+
+	ImGui::Begin("Buttonpress test");
+	if (ImGui::Button("Click me!"))
+	{
+		filepathpaddle = filepathBlue;
+	}
+
+	ImGui::End();
 }
 
-const char* filepathBG = "Resources/bg.png";
-const char* filepathBlue = "Resources/blue.png";
-const char* filepathpaddle = "Resources/paddle.png";
-const char* filepathBall = "Resources/ball.png";
 
 bool CalculateCollision(Luna::Anchor& a, Luna::Anchor& b)
 {
